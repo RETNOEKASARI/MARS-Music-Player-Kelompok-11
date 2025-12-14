@@ -4,7 +4,7 @@ import os
 import random
 import json
 
-# --- CEK LIBRARY AUDIO ---
+#library audio
 try:
     from pygame import mixer
 except ImportError:
@@ -15,11 +15,8 @@ try:
     from mutagen.mp3 import MP3
 except ImportError:
     MP3 = None 
-
-# =========================================================
-# 1. BACKEND: DATA & LOGIKA (KODINGAN LAMA)
-# =========================================================
-
+    
+#backend dan logika
 class Lagu:
     def __init__(self, id_lagu, judul, artis, genre, filename):
         self.id = id_lagu
@@ -74,11 +71,8 @@ class DoublyLinkedList:
             nodes.append(curr)
             curr = curr.next
         return nodes
-
-# =========================================================
-# 2. APLIKASI UTAMA (GUI GABUNGAN)
-# =========================================================
-
+        
+#aplikasi utama
 class MarsPlayerApp:
     def __init__(self, root):
         self.root = root
@@ -87,12 +81,12 @@ class MarsPlayerApp:
         self.root.resizable(True, True) 
         self.root.minsize(900, 600)
         
-        # --- KONFIGURASI WARNA (TEMA BLACK PINK) ---
+        #konfigurasi warna (blackpink)
         self.colors = {
             "bg_main": "#000000",      
             "bg_side": "#050505",      
             "player":  "#111111",      
-            "accent":  "#FF1493",      # Deep Pink
+            "accent":  "#FF1493",      
             "accent2": "#C71585",      
             "text":    "#FFFFFF",
             "card_bg": "#1A1A1A",
@@ -110,7 +104,7 @@ class MarsPlayerApp:
             try: mixer.init()
             except: pass
 
-        # --- DATA PLAYER (KODINGAN LAMA) ---
+        #data player
         self.library = [] 
         self.playlists = { "Mood Today": [] } 
         self.queue_dll = DoublyLinkedList() 
@@ -121,7 +115,7 @@ class MarsPlayerApp:
         self.last_id = 0
         self.song_length = 0 
         
-        # --- DATA USER & LOGIN (FITUR BARU) ---
+        #data user dan login
         self.current_user = None
         self.user_role = None 
         self.target_role = None 
@@ -129,20 +123,20 @@ class MarsPlayerApp:
         self.users = {} 
         self.load_users()
 
-        # Style Slider
+        #slider
         self.style = ttk.Style()
         self.style.theme_use('clam')
         self.style.configure("Horizontal.TScale", background=self.colors["player"], 
                              troughcolor="#424141", borderwidth=0, 
                              lightcolor=self.colors["accent"], darkcolor=self.colors["accent"])
 
-        # --- CONTAINER FRAME (Navigasi) ---
+        #navigasi
         self.frame_landing = tk.Frame(self.root, bg=self.colors["bg_main"]) 
         self.frame_login = tk.Frame(self.root, bg=self.colors["bg_main"])   
         self.frame_home = tk.Frame(self.root, bg=self.colors["bg_main"])    
         self.frame_player = tk.Frame(self.root, bg=self.colors["bg_main"])  
 
-        # Setup UI
+        #setup ui
         self.setup_landing_ui()
         self.setup_login_ui()
         self.setup_home_ui()   
@@ -151,9 +145,7 @@ class MarsPlayerApp:
         self.update_slider_loop() 
         self.show_landing_page() 
 
-    # =========================================================
-    #  DATABASE USER (JSON)
-    # =========================================================
+    #database user
     def load_users(self):
         if not os.path.exists(self.users_db_file):
             self.users = {} 
@@ -169,9 +161,7 @@ class MarsPlayerApp:
         with open(self.users_db_file, "w") as f:
             json.dump(self.users, f, indent=4)
 
-    # =========================================================
-    #  POP-UP CUSTOM (AGAR TEMA SERASI)
-    # =========================================================
+    #custom pop up
     def show_custom_alert(self, title, message, is_error=False):
         popup = tk.Toplevel(self.root)
         popup.configure(bg=self.colors["bg_main"])
@@ -248,9 +238,7 @@ class MarsPlayerApp:
         self.root.wait_window(popup)
         return self.popup_yesno_val
 
-    # =========================================================
-    #  NAVIGASI HALAMAN
-    # =========================================================
+    #navigasi halaman
     def show_landing_page(self):
         self.frame_home.pack_forget()
         self.frame_player.pack_forget()
@@ -287,9 +275,7 @@ class MarsPlayerApp:
         self.user_role = None
         self.show_landing_page()
 
-    # =========================================================
-    #  UI 1: LANDING PAGE (PILIHAN)
-    # =========================================================
+    #landing page
     def setup_landing_ui(self):
         box = tk.Frame(self.frame_landing, bg=self.colors["card_bg"], padx=60, pady=60)
         box.place(relx=0.5, rely=0.5, anchor="center")
@@ -313,9 +299,7 @@ class MarsPlayerApp:
                             bd=0, cursor="hand2")
         btn_reg.pack()
 
-    # =========================================================
-    #  UI 2: FORM LOGIN + RESET PASSWORD
-    # =========================================================
+    #reset password
     def setup_login_ui(self):
         login_box = tk.Frame(self.frame_login, bg=self.colors["card_bg"], padx=50, pady=50)
         login_box.place(relx=0.5, rely=0.5, anchor="center")
@@ -340,7 +324,7 @@ class MarsPlayerApp:
                              bg="#222", fg="gray", font=("Arial", 10), bd=0, pady=5, cursor="hand2")
         btn_back.pack(fill="x")
 
-        # --- TOMBOL LUPA PASSWORD (FITUR BARU) ---
+        #lupa password
         tk.Label(login_box, text="", font=("Arial", 5), bg=self.colors["card_bg"]).pack() 
         btn_lupa = tk.Button(login_box, text="Lupa Password?", command=self.proses_lupa_password,
                              bg=self.colors["card_bg"], fg=self.colors["accent"], font=("Arial", 9, "underline"),
@@ -392,7 +376,7 @@ class MarsPlayerApp:
         is_admin = self.show_custom_yesno("Pilih Peran", "Apakah akun ini untuk ADMIN?\n(Pilih YA untuk Admin, TIDAK untuk User Biasa)")
         role_dipilih = "admin" if is_admin else "user"
 
-        #BATASAN ADMIN
+        #batas admin
         if role_dipilih == "admin":
             jumlah_admin = sum(1 for u in self.users.values() if u["role"] == "admin")
             if jumlah_admin >= 5:
@@ -421,9 +405,7 @@ class MarsPlayerApp:
         self.save_users()
         self.show_custom_alert("Sukses", "Password berhasil diubah.\nSilakan Login kembali.")
 
-    # =========================================================
-    #  UI 3: HOME DASHBOARD
-    # =========================================================
+    #dashboard
     def setup_home_ui(self):
         header = tk.Frame(self.frame_home, height=300, bg=self.colors["accent"])
         header.pack(fill="x", side="top")
@@ -461,9 +443,7 @@ class MarsPlayerApp:
                             bd=0, padx=30, pady=10, cursor="hand2")
         btn_add.pack(pady=5)
 
-    # =========================================================
-    #  UI 4: PLAYER MUSIK (KODINGAN LAMA TERINTEGRASI)
-    # =========================================================
+    #player musik
     def setup_player_ui(self):
         sidebar = tk.Frame(self.frame_player, bg=self.colors["bg_side"], width=220)
         sidebar.pack(side="left", fill="y")
@@ -553,7 +533,7 @@ class MarsPlayerApp:
         tk.Button(right_frame, text="🗑️", bg=self.colors["player"], fg=self.colors["accent"], bd=0, font=("Arial", 16), cursor="hand2", command=self.hapus_lagu_terpilih).pack(side="left", padx=10)
         tk.Button(right_frame, text="➜ Pindah", bg=self.colors["player"], fg="white", bd=0, font=("Arial", 10), cursor="hand2", command=self.pindah_playlist_dialog).pack(side="left", padx=10)
 
-    # --- LOGIKA PLAYER ---
+    #logika player
     def go_to_mood_today(self):
         self.active_playlist_name = "Mood Today"
         self.refresh_view("Mood Today")
@@ -629,7 +609,7 @@ class MarsPlayerApp:
             col += 1
             if col >= max_cols: col=0; row+=1
 
-    # --- FUNGSI AUDIO DAN LAIN-LAIN ---
+    #fungsi audio
     def get_artist_color(self, artist_name):
         key = artist_name.strip().lower()
         if key not in self.artist_colors:
@@ -839,4 +819,5 @@ class MarsPlayerApp:
 if __name__ == "__main__":
     root = tk.Tk()
     app = MarsPlayerApp(root)
+
     root.mainloop()
