@@ -6,7 +6,7 @@ Oleh kelompok 11:
 3. Retno Eka Sari
 
 ## Deskripsi Proyek
-Aplikasi pemutar musik desktop sederhana yang dikembangkan menggunakan Python dan library Tkinter. Aplikasi ini mengimplementasikan konsep Struktur Data seperti Doubly Linked List untuk mengelola antrian lagu (Playlist/Queue) dan menerapkan manajemen user (Login Admin/User) untuk otentikasi fitur.
+Proyek MARS Music Player adalah sebuah aplikasi pemutar musik desktop standalone yang dikembangkan menggunakan bahasa pemrograman Python dengan antarmuka grafis (GUI) yang dibangun menggunakan toolkit Tkinter. Aplikasi ini dirancang untuk mendemonstrasikan implementasi fundamental dari konsep Struktur Data tingkat lanjut, terutama Doubly Linked List, dalam skenario aplikasi nyata (pengelolaan antrian pemutaran/playlist). Selain itu, sistem ini menerapkan manajemen otentikasi sederhana untuk memisahkan hak akses antara Administrator dan Pengguna.
 
 ## Fitur Utama
 * **Autentikasi Pengguna:** Mode login untuk Administrator dan Pengguna biasa (User).
@@ -27,3 +27,10 @@ Aplikasi pemutar musik desktop sederhana yang dikembangkan menggunakan Python da
 Buka Terminal/CMD di direktori proyek Anda dan jalankan perintah ini:
 ```bash
 pip install pygame mutagen
+```
+
+## Eksekusi Program
+Kemudian bisa jalankan aplikasinya
+```bash
+python MARS.py
+```
